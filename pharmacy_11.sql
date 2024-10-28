@@ -719,6 +719,94 @@ VALUES
     1,
     'Supplement for bone health'
   );
+
+--Заполнение таблицы order_status
+INSERT INTO order_status(status)
+VALUES
+  ('new'),
+  ('waiting for payment'),
+  ('paid'),
+  ('confirmed'),
+  ('being prepared'),
+  ('sent'),
+  ('on the way'),
+  ('delivered'),
+  ('canceled'),
+  ('return'),
+  ('completed'),
+  ('error');
+
+--Заполнение таблицы prescription
+INSERT INTO prescription(prescription_number, customer_name, doctor_name, date, expiration_date, description)
+VALUES 
+  (1001, 'Alice Smith', 'Dr. John Doe', '2024-01-10', '2024-02-10', 'Antibiotics for infection')
+	(1002, 'Bob Johnson', 'Dr. Sarah Clark', '2024-01-12', '2024-02-12', 'Pain relief for back pain')
+	(1003, 'Carol Lee', 'Dr. Mark Brown', '2024-01-15', '2024-03-15', 'Medication for hypertension')
+	(1004, 'Dave Wilson', 'Dr. Emily Green', '2024-01-17', '2024-02-17', 'Cough suppressant for cold')
+	(1005, 'Eve Adams', 'Dr. John Doe', '2024-01-20', '2024-02-20', 'Anti-inflammatory for joint pain')
+	(1006, 'Frank Hall', 'Dr. Sarah Clark', '2024-01-22', '2024-02-22', 'Antihistamine for allergies')
+	(1007, 'Grace Young', 'Dr. Emily Green', '2024-01-25', '2024-02-25', 'Cholesterol-lowering medication')
+	(1008, 'Hank King', 'Dr. Mark Brown', '2024-01-27', '2024-02-27', 'Antiviral for flu symptoms')
+	(1009, 'Ivy Scott', 'Dr. John Doe', '2024-02-01', '2024-03-01', 'Antibiotic cream for skin infection')
+	(1010, 'Jack White', 'Dr. Sarah Clark', '2024-02-03', '2024-03-03', 'Diabetes medication')
+	(1011, 'Kim Black', 'Dr. Emily Green', '2024-02-05', '2024-03-05', 'Pain relief for arthritis')
+	(1012, 'Liam Gray', 'Dr. Mark Brown', '2024-02-07', '2024-03-07', 'Inhaler for asthma')
+	(1013, 'Mia Brown', 'Dr. John Doe', '2024-02-09', '2024-03-09', 'Thyroid medication')
+	(1014, 'Nina Green', 'Dr. Sarah Clark', '2024-02-11', '2024-03-11', 'Eye drops for infection')
+	(1015, 'Oscar Woo', 'Dr. Emily Green', '2024-02-13', '2024-03-13', 'Allergy relief medication')
+	(1016, 'Pauline Stone', 'Dr. Mark Brown', '2024-02-15', '2024-03-15', 'Pain relief for migraines')
+	(1017, 'Quincy Hill', 'Dr. John Doe', '2024-02-18', '2024-03-18', 'Vitamin D supplement')
+	(1018, 'Rachel Brooks', 'Dr. Sarah Clark', '2024-02-20', '2024-03-20', 'Cold medicine')
+	(1019, 'Steve Cole', 'Dr. Emily Green', '2024-02-22', '2024-03-22', 'Antibiotics for sinus infection')
+	(1020, 'Tina Moore', 'Dr. Mark Brown', '2024-02-24', '2024-03-24', 'Antifungal for skin infection');
+
+--Заполнение таблицы clients_order
+INSERT INTO clients_order(order_date, employee_verification_id, customer_verification_id, total_amount, status_id)
+VALUES
+  ('2023-01-15', 1001, 5001, 250.00, 1),
+  ('2023-01-20', 1002, 5002, 150.50, 2),
+  ('2023-01-22', 1003, 5003, 320.75, 3),
+  ('2023-02-10', 1004, 5004, 450.00, 7),
+  ('2023-02-15', 1005, 5005, 550.20, 10),
+  ('2023-02-18', 1001, 5006, 125.00, 4),
+  ('2023-03-01', 1002, 5007, 675.90, 3),
+	('2023-03-05', 1003, 5008, 300.00, 11),
+	('2023-03-10', 1004, 5009, 180.30, 12),
+	('2023-03-15', 1005, 5010, 950.00, 6),
+  ('2023-04-01', 1001, 5011, 110.75, 5),
+	('2023-04-05', 1002, 5012, 360.40, 10),
+	('2023-04-10', 1003, 5013, 720.00, 11),
+	('2023-04-15', 1004, 5014, 430.50, 11),
+	('2023-04-20', 1005, 5015, 240.00, 11),
+	('2023-05-01', 1001, 5016, 580.00, 11),
+	('2023-05-05', 1002, 5017, 620.30, 11),
+	('2023-05-10', 1003, 5018, 270.45, 11),
+	('2023-05-15', 1004, 5019, 390.00, 11),
+	('2023-05-20', 1005, 5020, 510.60, 11);
+
+--Заполнение таблицы prescription
+INSERT INTO prescription(prescription_number, customer_name, doctor_name, date, expiration_date, description)
+VALUES 
+  (1001, 'Alice Smith', 'Dr. John Doe', '2024-01-10', '2024-02-10', 'Antibiotics for infection')
+	(1002, 'Bob Johnson', 'Dr. Sarah Clark', '2024-01-12', '2024-02-12', 'Pain relief for back pain')
+	(1003, 'Carol Lee', 'Dr. Mark Brown', '2024-01-15', '2024-03-15', 'Medication for hypertension')
+	(1004, 'Dave Wilson', 'Dr. Emily Green', '2024-01-17', '2024-02-17', 'Cough suppressant for cold')
+	(1005, 'Eve Adams', 'Dr. John Doe', '2024-01-20', '2024-02-20', 'Anti-inflammatory for joint pain')
+	(1006, 'Frank Hall', 'Dr. Sarah Clark', '2024-01-22', '2024-02-22', 'Antihistamine for allergies')
+	(1007, 'Grace Young', 'Dr. Emily Green', '2024-01-25', '2024-02-25', 'Cholesterol-lowering medication')
+	(1008, 'Hank King', 'Dr. Mark Brown', '2024-01-27', '2024-02-27', 'Antiviral for flu symptoms')
+	(1009, 'Ivy Scott', 'Dr. John Doe', '2024-02-01', '2024-03-01', 'Antibiotic cream for skin infection')
+	(1010, 'Jack White', 'Dr. Sarah Clark', '2024-02-03', '2024-03-03', 'Diabetes medication')
+	(1011, 'Kim Black', 'Dr. Emily Green', '2024-02-05', '2024-03-05', 'Pain relief for arthritis')
+	(1012, 'Liam Gray', 'Dr. Mark Brown', '2024-02-07', '2024-03-07', 'Inhaler for asthma')
+	(1013, 'Mia Brown', 'Dr. John Doe', '2024-02-09', '2024-03-09', 'Thyroid medication')
+	(1014, 'Nina Green', 'Dr. Sarah Clark', '2024-02-11', '2024-03-11', 'Eye drops for infection')
+	(1015, 'Oscar Woo', 'Dr. Emily Green', '2024-02-13', '2024-03-13', 'Allergy relief medication')
+	(1016, 'Pauline Stone', 'Dr. Mark Brown', '2024-02-15', '2024-03-15', 'Pain relief for migraines')
+	(1017, 'Quincy Hill', 'Dr. John Doe', '2024-02-18', '2024-03-18', 'Vitamin D supplement')
+	(1018, 'Rachel Brooks', 'Dr. Sarah Clark', '2024-02-20', '2024-03-20', 'Cold medicine')
+	(1019, 'Steve Cole', 'Dr. Emily Green', '2024-02-22', '2024-03-22', 'Antibiotics for sinus infection')
+	(1020, 'Tina Moore', 'Dr. Mark Brown', '2024-02-24', '2024-03-24', 'Antifungal for skin infection');
   
 --тестируем базу запросами---------------------------------------------------------
 -- попытаемся добавить юзера с существующим в базе мейлом
