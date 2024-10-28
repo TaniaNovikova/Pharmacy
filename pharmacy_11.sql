@@ -720,3 +720,43 @@ VALUES
     'Supplement for bone health'
   );
   
+--тестируем базу запросами---------------------------------------------------------
+-- попытаемся добавить юзера с существующим в базе мейлом
+INSERT INTO
+  verification (email, user_id)
+VALUES
+  ('julia.martin@example.com', 21);
+
+--свяжем данные из всех четырех таблиц: users, verification, roles и user_data. 
+SELECT
+  user_data.first_name,
+  user_data.last_name,
+  user_data.user_id,
+  user_data.address,
+  verification.email,
+  role.role
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id;
+
+--найдем активных пользователей из Франции
+
+SELECT
+  user_data.first_name,
+  user_data.last_name,
+  user_data.user_id,
+  user_data.address,
+  verification.email,
+  role.role
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id
+WHERE
+  users.is_activ = TRUE
+  AND user_data.address LIKE ('%France%')
+  AND role.role = 'customer';
+  
