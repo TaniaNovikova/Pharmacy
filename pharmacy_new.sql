@@ -960,3 +960,88 @@ VALUES
   ('2023-05-10', 18, 8, 270.45, 11),
   ('2023-05-15', 5, 19, 390.00, 11),
   ('2023-05-20', 11, 20, 510.60, 11);
+
+  --тестируем базу запросами---------------------------------------------------------
+-- попытаемся добавить юзера с существующим в базе мейлом
+INSERT INTO
+  verification (email, user_id)
+VALUES
+  ('julia.martin@example.com', 21);
+
+--свяжем данные из всех четырех таблиц: users, verification, roles и user_data. 
+SELECT
+  user_data.first_name,
+  user_data.last_name,
+  user_data.user_id,
+  user_data.address,
+  verification.email,
+  role.role
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id;
+
+--найдем активных пользователей из Франции
+SELECT
+  user_data.first_name,
+  user_data.last_name,
+  user_data.user_id,
+  user_data.address,
+  verification.email,
+  role.role
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id
+WHERE
+  users.is_activ = TRUE
+  AND user_data.address LIKE ('%France%')
+  AND role.role = 'customer';
+
+--сделаем всех покупателей в базе активными
+UPDATE
+  users
+SET
+  is_activ = true
+WHERE
+  is_activ = false;
+
+
+--на какую сумму были  сделаны заказы каждым из покупателей из Франции
+SELECT
+  verification.id AS customer_id,
+  verification.email,
+  SUM(clients_order.total_amount) AS France_total_amount
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id
+  JOIN clients_order ON clients_order.verification_id = verification.id
+WHERE
+  role.role = 'customer'
+  AND user_data.address LIKE ('%France%');
+
+--на какую общую сумму были  сделаны заказы из Франции
+SELECT
+  SUM(clients_order.total_amount) AS France_total_amount
+FROM
+  verification
+  JOIN user_data ON verification.user_id = user_data.user_id
+  JOIN users ON users.id = user_data.user_id
+  JOIN role ON users.role_id = role.id
+  JOIN clients_order ON clients_order.verification_id = verification.id
+WHERE
+  role.role = 'customer'
+  AND user_data.address LIKE ('%France%');
+
+
+
+
+
+
+
+
+
