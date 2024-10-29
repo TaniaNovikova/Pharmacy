@@ -1,3 +1,5 @@
+  <!-- ссылка на схему базы данных: https://drawsql.app/teams/ait-26/diagrams/pharmacy -->
+  
   SELECT * FROM manufacturer;
   -- Производитель
 CREATE TABLE
