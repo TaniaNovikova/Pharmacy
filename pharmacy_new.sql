@@ -1,4 +1,5 @@
--- Производитель
+  SELECT * FROM manufacturer;
+  -- Производитель
 CREATE TABLE
   manufacturer (
     id serial PRIMARY KEY,
@@ -87,6 +88,9 @@ CREATE TABLE
     FOREIGN KEY (user_id) REFERENCES users (id)
   );
 
+
+
+
 -- Препарат
 CREATE TABLE
   product (
@@ -165,10 +169,10 @@ CREATE TABLE
   clients_order (
     id serial PRIMARY KEY,
     order_date date NOT NULL,
-    employee_id int,
-    FOREIGN KEY (employee_id) REFERENCES users (id),
-    customer_id int NOT NULL,
-    FOREIGN KEY (customer_id) REFERENCES users (id),
+    user_id int NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    verification_id int NOT NULL,
+    FOREIGN KEY (verification_id) REFERENCES verification (id),
     total_amount decimal(8, 2) NOT NULL CONSTRAINT amount_cant_be_lower_than_0 CHECK (total_amount >= 0),
     status_id int NOT NULL,
     FOREIGN KEY (status_id) REFERENCES order_status (id),
@@ -188,12 +192,14 @@ CREATE TABLE
   );
 
 --Заполнение таблиц
+
 INSERT INTO
   role (role)
 VALUES
   ('admin'),
   ('customer'),
   ('employee');
+  
 
 INSERT INTO
   users (login, password, is_activ, role_id)
@@ -218,6 +224,7 @@ VALUES
   ('login18', 'password18', false, 3),
   ('login19', 'password19', true, 2),
   ('login20', 'password20', false, 2);
+  
 
 INSERT INTO
   verification (email, user_id)
@@ -242,6 +249,7 @@ VALUES
   ('otto.lehto@example.com', 18),
   ('emily.boyd@example.com', 19),
   ('krissie.vanhulst@example.com', 20);
+  
 
 INSERT INTO
   user_data (first_name, last_name, address, user_id)
@@ -366,6 +374,7 @@ VALUES
     'Burgemeestersplantsoen 7519, Netherlands, Banhol',
     20
   );
+  
 
 INSERT INTO
   manufacturer (
@@ -425,11 +434,7 @@ VALUES
     'description6',
     'country6'
   );
-
-SELECT
-  *
-FROM
-  manufacturer;
+  
 
 INSERT INTO
   supplier (company_name, phone, email, address)
@@ -482,6 +487,7 @@ VALUES
     'contact@medalliance.jp',
     '505 Birch Rd, Tokyo, Japan'
   );
+  
 
 -- Filling data for the  product_category table
 INSERT INTO
@@ -503,6 +509,7 @@ VALUES
   ('Gastroenterology drugs'),
   ('Antidepressants'),
   ('Antipyretics');
+  
 
 -- Filling data for the units_of_measurement  table
 INSERT INTO
@@ -524,7 +531,7 @@ VALUES
   ('Suppositories'),
   ('Ointment'),
   ('Gels');
-
+  
 -- Filling data for the  dosage_form table
 INSERT INTO
   dosage_form (dosage_form_name)
@@ -545,6 +552,7 @@ VALUES
   ('Lotion'),
   ('Patch'),
   ('Granules');
+  
 
 -- Filling data for the product table
 INSERT INTO
@@ -720,43 +728,235 @@ VALUES
     'Supplement for bone health'
   );
   
---тестируем базу запросами---------------------------------------------------------
--- попытаемся добавить юзера с существующим в базе мейлом
+
+--Заполнение таблицы order_status 
 INSERT INTO
-  verification (email, user_id)
+  order_status (status)
 VALUES
-  ('julia.martin@example.com', 21);
-
---свяжем данные из всех четырех таблиц: users, verification, roles и user_data. 
-SELECT
-  user_data.first_name,
-  user_data.last_name,
-  user_data.user_id,
-  user_data.address,
-  verification.email,
-  role.role
-FROM
-  verification
-  JOIN user_data ON verification.user_id = user_data.user_id
-  JOIN users ON users.id = user_data.user_id
-  JOIN role ON users.role_id = role.id;
-
---найдем активных пользователей из Франции
-
-SELECT
-  user_data.first_name,
-  user_data.last_name,
-  user_data.user_id,
-  user_data.address,
-  verification.email,
-  role.role
-FROM
-  verification
-  JOIN user_data ON verification.user_id = user_data.user_id
-  JOIN users ON users.id = user_data.user_id
-  JOIN role ON users.role_id = role.id
-WHERE
-  users.is_activ = TRUE
-  AND user_data.address LIKE ('%France%')
-  AND role.role = 'customer';
+  ('new'),
+  ('waiting for payment'),
+  ('paid'),
+  ('confirmed'),
+  ('being prepared'),
+  ('sent'),
+  ('on the way'),
+  ('delivered'),
+  ('canceled'),
+  ('return'),
+  ('completed'),
+  ('error');
   
+
+--Заполнение таблицы prescription 
+INSERT INTO
+  prescription (
+    prescription_number,
+    customer_name,
+    doctor_name,
+    date,
+    expiration_date,
+    description
+  )
+VALUES
+  (
+    1001,
+    'Alice Smith',
+    'Dr. John Doe',
+    '2024-01-10',
+    '2024-02-10',
+    'Antibiotics for infection'
+  ),
+  (
+    1002,
+    'Bob Johnson',
+    'Dr. Sarah Clark',
+    '2024-01-12',
+    '2024-02-12',
+    'Pain relief for back pain'
+  ),
+  (
+    1003,
+    'Carol Lee',
+    'Dr. Mark Brown',
+    '2024-01-15',
+    '2024-03-15',
+    'Medication for hypertension'
+  ),
+  (
+    1004,
+    'Dave Wilson',
+    'Dr. Emily Green',
+    '2024-01-17',
+    '2024-02-17',
+    'Cough suppressant for cold'
+  ),
+  (
+    1005,
+    'Eve Adams',
+    'Dr. John Doe',
+    '2024-01-20',
+    '2024-02-20',
+    'Anti-inflammatory for joint pain'
+  ),
+  (
+    1006,
+    'Frank Hall',
+    'Dr. Sarah Clark',
+    '2024-01-22',
+    '2024-02-22',
+    'Antihistamine for allergies'
+  ),
+  (
+    1007,
+    'Grace Young',
+    'Dr. Emily Green',
+    '2024-01-25',
+    '2024-02-25',
+    'Cholesterol-lowering medication'
+  ),
+  (
+    1008,
+    'Hank King',
+    'Dr. Mark Brown',
+    '2024-01-27',
+    '2024-02-27',
+    'Antiviral for flu symptoms'
+  ),
+  (
+    1009,
+    'Ivy Scott',
+    'Dr. John Doe',
+    '2024-02-01',
+    '2024-03-01',
+    'Antibiotic cream for skin infection'
+  ),
+  (
+    1010,
+    'Jack White',
+    'Dr. Sarah Clark',
+    '2024-02-03',
+    '2024-03-03',
+    'Diabetes medication'
+  ),
+  (
+    1011,
+    'Kim Black',
+    'Dr. Emily Green',
+    '2024-02-05',
+    '2024-03-05',
+    'Pain relief for arthritis'
+  ),
+  (
+    1012,
+    'Liam Gray',
+    'Dr. Mark Brown',
+    '2024-02-07',
+    '2024-03-07',
+    'Inhaler for asthma'
+  ),
+  (
+    1013,
+    'Mia Brown',
+    'Dr. John Doe',
+    '2024-02-09',
+    '2024-03-09',
+    'Thyroid medication'
+  ),
+  (
+    1014,
+    'Nina Green',
+    'Dr. Sarah Clark',
+    '2024-02-11',
+    '2024-03-11',
+    'Eye drops for infection'
+  ),
+  (
+    1015,
+    'Oscar Woo',
+    'Dr. Emily Green',
+    '2024-02-13',
+    '2024-03-13',
+    'Allergy relief medication'
+  ),
+  (
+    1016,
+    'Pauline Stone',
+    'Dr. Mark Brown',
+    '2024-02-15',
+    '2024-03-15',
+    'Pain relief for migraines'
+  ),
+  (
+    1017,
+    'Quincy Hill',
+    'Dr. John Doe',
+    '2024-02-18',
+    '2024-03-18',
+    'Vitamin D supplement'
+  ),
+  (
+    1018,
+    'Rachel Brooks',
+    'Dr. Sarah Clark',
+    '2024-02-20',
+    '2024-03-20',
+    'Cold medicine'
+  ),
+  (
+    1019,
+    'Steve Cole',
+    'Dr. Emily Green',
+    '2024-02-22',
+    '2024-03-22',
+    'Antibiotics for sinus infection'
+  ),
+  (
+    1020,
+    'Tina Moore',
+    'Dr. Mark Brown',
+    '2024-02-24',
+    '2024-03-24',
+    'Antifungal for skin infection'
+  );
+  
+
+SELECT
+  verification.id
+FROM
+  verification
+  JOIN users ON verification.user_id=users.id
+WHERE
+  users.role_id = 2;
+  
+  
+--Заполнение таблицы clients_order
+
+INSERT INTO
+  clients_order (
+    order_date,
+    user_id,
+    verification_id,
+    total_amount,
+    status_id
+  )
+VALUES
+  ('2023-01-15', 5, 2, 250.00, 1),
+  ('2023-01-20', 11, 3, 150.50, 2),
+  ('2023-01-22', 18, 4, 320.75, 3),
+  ('2023-02-10', 5, 6, 450.00, 7),
+  ('2023-02-15', 11, 7, 550.20, 10),
+  ('2023-02-18', 18, 8, 125.00, 4),
+  ('2023-03-01', 5, 9, 675.90, 3),
+  ('2023-03-05', 11, 10, 300.00, 11),
+  ('2023-03-10', 18, 12, 180.30, 12),
+  ('2023-03-15', 5, 13, 950.00, 6),
+  ('2023-04-01', 11, 14, 110.75, 5),
+  ('2023-04-05', 18, 15, 360.40, 10),
+  ('2023-04-10', 5, 16, 720.00, 11),
+  ('2023-04-15', 11, 17, 430.50, 11),
+  ('2023-04-20', 18, 19, 240.00, 11),
+  ('2023-05-01', 5, 20, 580.00, 11),
+  ('2023-05-05', 11, 17, 620.30, 11),
+  ('2023-05-10', 18, 8, 270.45, 11),
+  ('2023-05-15', 5, 19, 390.00, 11),
+  ('2023-05-20', 11, 20, 510.60, 11);
